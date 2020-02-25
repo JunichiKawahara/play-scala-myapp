@@ -10,14 +10,14 @@ import play.api.mvc._
 class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
 
   def index(p: Option[Int]) = Action {
-    val arr: List[String] = List(
-      "Yamada Taro",
-      "Tanaka Hanako",
-      "Ogawa Sachiko"
+    val arr: List[List[String]] = List(
+      List("Yamada Taro", "taro@yamada", "999-999"),
+      List("Tanaka Hanako", "hanako@flower", "888-888"),
+      List("Ogawa Sachiko", "sachico@happy", "777-777")
     )
     Ok(views.html.index(
       "これはコントローラーで用意したメッセージです。",
-      arr
+      arr, List("Name", "Mail", "Tel")
     ))
   }
 
