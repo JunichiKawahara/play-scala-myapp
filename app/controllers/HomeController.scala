@@ -9,16 +9,19 @@ import play.api.mvc._
 @Singleton
 class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
 
-  def index(p: Option[Int]) = Action {
-    val arr: List[List[String]] = List(
-      List("Yamada Taro", "taro@yamada", "999-999"),
-      List("Tanaka Hanako", "hanako@flower", "888-888"),
-      List("Ogawa Sachiko", "sachico@happy", "777-777")
-    )
+  def index() = Action {
     Ok(views.html.index(
-      "これはコントローラーで用意したメッセージです。",
-      arr, List("Name", "Mail", "Tel")
+      "これはコントローラーで用意したメッセージです。"
     ))
   }
 
+  def form() = Action { request =>
+    val form: Option[Map[String, Seq[String]]] = request.body.asFormUrlEncoded
+    val param: Map[String, Seq[String]] = form.getOrElse(Map())
+    val name: String = param.get("name").get(0)
+    val password: String = param.get("pass").get(0)
+    Ok(views.html.index(
+      "name: " + name + ", password: " + password
+    ))
+  }
 }
