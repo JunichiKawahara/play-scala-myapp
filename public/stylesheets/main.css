@@ -19,6 +19,22 @@ h1 {
     margin: -85px 0px 0px 0px;
 }
 
+table {
+    margin: 10px 0px;
+}
+
+table tr th {
+    padding: 5px 15px;
+    color: #fff;
+    background-color: #009;
+}
+
+table tr td {
+    padding: 5px 15px;
+    color: #006;
+    background-color: #eef;
+}
+
 article {
     color: #567;
     font-size: 14pt;
