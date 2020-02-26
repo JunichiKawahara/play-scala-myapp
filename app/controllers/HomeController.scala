@@ -1,27 +1,31 @@
 package controllers
 
-import akka.util._
 import javax.inject._
 import play.api._
-import play.api.http._
 import play.api.mvc._
+import play.api.data._
+import play.api.data.Forms._
 
 @Singleton
-class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
+class HomeController @Inject()(cc: MessagesControllerComponents) extends MessagesAbstractController(cc) {
+// class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
 
-  def index() = Action {
+  import MyForm._
+
+  def index() = Action { implicit request =>
     Ok(views.html.index(
-      "これはコントローラーで用意したメッセージです。"
+      "これはコントローラーで用意したメッセージです。",
+      myform
     ))
   }
 
-  def form() = Action { request =>
-    val form: Option[Map[String, Seq[String]]] = request.body.asFormUrlEncoded
-    val param: Map[String, Seq[String]] = form.getOrElse(Map())
-    val name: String = param.get("name").get(0)
-    val password: String = param.get("pass").get(0)
+  def form() = Action { implicit request =>
+    val form = myform.bindFromRequest
+    val data = form.get
     Ok(views.html.index(
-      "name: " + name + ", password: " + password
+      "name: " + data.name + ", password: " + data.pass +
+        ", radio: " + data.radio,
+      form
     ))
   }
 }

@@ -1,25 +1,18 @@
-@(message: String)
-
-@makeForm = {
-  <form method="post" action="/form">
-    <table>
-      <tr>
-        <th>Name</th>
-        <td><input type="text" name="name"></td>
-      </tr>
-      <tr>
-        <th>Pass</th>
-        <td><input type="password" name="pass"></td>
-      </tr>
-      <tr>
-        <th></th>
-        <td><input type="submit" value="send form"></td>
-      </tr>
-    </table>
-  </form>
-}
+@(message: String, myform: Form[MyForm.Data])(implicit request: MessagesRequestHeader)
 
 @main("Index Page", "Hello", "copyright 2020.") {
     <p>@message</p>
-    @makeForm
+    @helper.form(action=routes.HomeController.form) {
+      @helper.CSRF.formField
+      @helper.inputText(myform("name"))
+      @helper.inputPassword(myform("pass"))
+      @helper.inputRadioGroup(myform("radio"),
+        options = Seq(
+          "ウィンドウズ" -> "Windows",
+          "マック" -> "macOS",
+          "リナックス" -> "Linux"
+        )
+      )
+      <button>send form</button>
+    }
 }
